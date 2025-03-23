@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -43,7 +44,6 @@ internal fun getCardImage(suit: String, rank: String): Int {
         }
     }
 }
-
 
 internal fun getClubsImage(rank: String): Int {
     return when (rank) {
@@ -140,9 +140,47 @@ fun CardImage(suit: String, rank: String, modifier: Modifier = Modifier) {
 
 }
 
+private fun generateRandomCard(previousCards: MutableList<Pair<String, String>>): Pair<String, String> {
+    val suits = arrayOf("clubs", "diamonds", "hearts", "spades")
+    val ranks = arrayOf("2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A")
+
+    val suitsLength = suits.size
+    val ranksLength = ranks.size
+
+    while (true) {
+        val randomSuit = suits[((0..<suitsLength).random())]
+        val randomRank = ranks[((0..<ranksLength).random())]
+
+        val card = Pair(randomSuit, randomRank)
+
+        if (!previousCards.contains(card)) {
+            return card
+        }
+    }
+}
+
+@VisibleForTesting
+internal fun generateRandomHand(): MutableList<Pair<String, String>> {
+    val hand: MutableList<Pair<String, String>> = mutableListOf()
+
+    repeat((0..4).count()) {
+        val randomCard = generateRandomCard(hand)
+        hand += randomCard
+    }
+
+    return hand
+}
+
 @Composable
 fun Game(modifier: Modifier = Modifier) {
-    CardImage("spades", "A")
+    val randomHand = generateRandomHand()
+
+    LazyRow {
+        items(count = 5) { index ->
+            val (suit, rank) = randomHand[index]
+            CardImage(suit, rank)
+        }
+    }
 }
 
 @Preview(showBackground = true)

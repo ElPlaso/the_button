@@ -14,4 +14,11 @@ class ButtonTests {
         val actualImage = getCardImage(suit, rank)
         assertEquals(expectedImage, actualImage)
     }
+
+    @Test
+    fun get_length_of_random_hand() {
+        val expectedLength = 5
+        val actualLength = generateRandomHand().size
+        assertEquals(expectedLength, actualLength)
+    }
 }
