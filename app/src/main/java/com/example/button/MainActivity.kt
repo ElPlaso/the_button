@@ -1,15 +1,17 @@
 package com.example.button
 
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.VisibleForTesting
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.button.ui.theme.ButtonTheme
 
@@ -19,29 +21,134 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ButtonTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    Game()
                 }
             }
         }
     }
 }
 
+@VisibleForTesting
+internal fun getCardImage(suit: String, rank: String): Int {
+    return when (suit) {
+        "clubs" -> getClubsImage(rank)
+        "diamonds" -> getDiamondsImage(rank)
+        "hearts" -> getHeartsImage(rank)
+        "spades" -> getSpadesImage(rank)
+        else -> {
+            throw Error("Invalid suit")
+        }
+    }
+}
+
+
+internal fun getClubsImage(rank: String): Int {
+    return when (rank) {
+        "2" -> R.drawable.two_of_clubs
+        "3" -> R.drawable.three_of_clubs
+        "4" -> R.drawable.four_of_clubs
+        "5" -> R.drawable.five_of_clubs
+        "6" -> R.drawable.six_of_clubs
+        "7" -> R.drawable.seven_of_clubs
+        "8" -> R.drawable.eight_of_clubs
+        "9" -> R.drawable.nine_of_clubs
+        "10" -> R.drawable.ten_of_clubs
+        "J" -> R.drawable.jack_of_clubs
+        "Q" -> R.drawable.queen_of_clubs
+        "K" -> R.drawable.king_of_clubs
+        "A" -> R.drawable.ace_of_clubs
+        else -> {
+            throw Error("Invalid rank")
+        }
+    }
+}
+
+internal fun getDiamondsImage(rank: String): Int {
+    return when (rank) {
+        "2" -> R.drawable.two_of_diamonds
+        "3" -> R.drawable.three_of_diamonds
+        "4" -> R.drawable.four_of_diamonds
+        "5" -> R.drawable.five_of_diamonds
+        "6" -> R.drawable.six_of_diamonds
+        "7" -> R.drawable.seven_of_diamonds
+        "8" -> R.drawable.eight_of_diamonds
+        "9" -> R.drawable.nine_of_diamonds
+        "10" -> R.drawable.ten_of_diamonds
+        "J" -> R.drawable.jack_of_diamonds
+        "Q" -> R.drawable.queen_of_diamonds
+        "K" -> R.drawable.king_of_diamonds
+        "A" -> R.drawable.ace_of_diamonds
+        else -> {
+            throw Error("Invalid rank")
+        }
+    }
+}
+
+internal fun getHeartsImage(rank: String): Int {
+    return when (rank) {
+        "2" -> R.drawable.two_of_hearts
+        "3" -> R.drawable.three_of_hearts
+        "4" -> R.drawable.four_of_hearts
+        "5" -> R.drawable.five_of_hearts
+        "6" -> R.drawable.six_of_hearts
+        "7" -> R.drawable.seven_of_hearts
+        "8" -> R.drawable.eight_of_hearts
+        "9" -> R.drawable.nine_of_hearts
+        "10" -> R.drawable.ten_of_hearts
+        "J" -> R.drawable.jack_of_hearts
+        "Q" -> R.drawable.queen_of_hearts
+        "K" -> R.drawable.king_of_hearts
+        "A" -> R.drawable.ace_of_hearts
+        else -> {
+            throw Error("Invalid rank")
+        }
+    }
+}
+
+internal fun getSpadesImage(rank: String): Int {
+    return when (rank) {
+        "2" -> R.drawable.two_of_spades
+        "3" -> R.drawable.three_of_spades
+        "4" -> R.drawable.four_of_spades
+        "5" -> R.drawable.five_of_spades
+        "6" -> R.drawable.six_of_spades
+        "7" -> R.drawable.seven_of_spades
+        "8" -> R.drawable.eight_of_spades
+        "9" -> R.drawable.nine_of_spades
+        "10" -> R.drawable.ten_of_spades
+        "J" -> R.drawable.jack_of_spades
+        "Q" -> R.drawable.queen_of_spades
+        "K" -> R.drawable.king_of_spades
+        "A" -> R.drawable.ace_of_spades
+        else -> {
+            throw Error("Invalid rank")
+        }
+    }
+}
+
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
+fun CardImage(suit: String, rank: String, modifier: Modifier = Modifier) {
+    val cardImage = getCardImage(suit, rank)
+
+    Image(
+        painter = painterResource(cardImage),
+        contentDescription = rank + "of" + suit
     )
+
+}
+
+@Composable
+fun Game(modifier: Modifier = Modifier) {
+    CardImage("spades", "A")
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun GamePreview() {
     ButtonTheme {
-        Greeting("Android")
+        Game()
     }
 }
