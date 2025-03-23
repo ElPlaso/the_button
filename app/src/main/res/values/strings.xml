@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Button</string>
+    <string name="straight_flush">Straight Flush</string>
+    <string name="quads">Quads</string>
+    <string name="full_house">Full House</string>
+    <string name="flush">Flush</string>
+    <string name="straight">Straight</string>
+    <string name="trips">Trips</string>
+    <string name="two_pair">Two Pair</string>
+    <string name="pair">Pair</string>
+    <string name="high_card">High Card</string>
 </resources>

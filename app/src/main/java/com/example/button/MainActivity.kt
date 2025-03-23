@@ -1,7 +1,5 @@
 package com.example.button
 
-
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -29,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.button.ui.theme.ButtonTheme
@@ -159,7 +158,7 @@ fun CardImage(suit: String, rank: String, modifier: Modifier = Modifier) {
 
 }
 
-private fun generateRandomCard(previousCards: MutableList<Pair<String, String>>): Pair<String, String> {
+private fun generateRandomCard(previousCards: Array<Pair<String, String>>): Pair<String, String> {
     val suits = arrayOf("clubs", "diamonds", "hearts", "spades")
     val ranks = arrayOf("2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A")
 
@@ -179,19 +178,19 @@ private fun generateRandomCard(previousCards: MutableList<Pair<String, String>>)
 }
 
 @VisibleForTesting
-internal fun generateRandomHand(): MutableList<Pair<String, String>> {
+internal fun generateRandomHand(): Array<Pair<String, String>> {
     val hand: MutableList<Pair<String, String>> = mutableListOf()
 
     repeat((0..4).count()) {
-        val randomCard = generateRandomCard(hand)
+        val randomCard = generateRandomCard(hand.toTypedArray())
         hand += randomCard
     }
 
-    return hand
+    return hand.toTypedArray()
 }
 
 @Composable
-fun Hand(hand: MutableList<Pair<String, String>>, modifier: Modifier = Modifier) {
+fun Hand(hand: Array<Pair<String, String>>, modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -210,10 +209,96 @@ fun Hand(hand: MutableList<Pair<String, String>>, modifier: Modifier = Modifier)
     }
 }
 
-@SuppressLint("MutableCollectionMutableState")
+val handRanking: Array<String> = arrayOf(
+    "Straight Flush",
+    "Quads",
+    "Full House",
+    "Flush",
+    "Straight",
+    "Trips",
+    "Two Pair",
+    "Pair",
+    "High Card"
+)
+
+@VisibleForTesting
+internal fun getBestHand(hand: Array<Pair<String, String>>): String {
+    // TODO: Handle straights
+    var seenSuit: String? = null
+    var isFlush = true
+    val rankOccurrences: MutableMap<String, Int> = mutableMapOf()
+
+    // Check for rank occurrences
+    hand.forEach {
+        val newOccurrence = rankOccurrences[it.second]?.plus(1) ?: 1
+        rankOccurrences[it.second] = newOccurrence
+    }
+
+    if (rankOccurrences.values.contains(4)) {
+        return handRanking[1]
+    }
+
+    if (rankOccurrences.values.contains(3) && rankOccurrences.values.contains(2)) {
+        return handRanking[2]
+    }
+
+    // Check for flush
+    hand.forEach {
+        if (it.first != seenSuit && seenSuit != null) {
+            isFlush = false
+        }
+        seenSuit = it.first
+    }
+
+    if (isFlush) {
+        return handRanking[3]
+    }
+
+    if (rankOccurrences.values.contains(3)) {
+        return handRanking[5]
+    }
+
+    if (rankOccurrences.values.contains(2)) {
+        if (rankOccurrences.values.filter { it == 2 }.size == 2) {
+            return handRanking[6]
+        }
+
+        return handRanking[7]
+    }
+
+    return handRanking[8]
+}
+
+@Composable
+fun HandSelector(modifier: Modifier = Modifier, hand: String, onClick: () -> Unit) {
+    val label = when (hand) {
+        "Straight Flush" -> stringResource(R.string.straight_flush)
+        "Quads" -> stringResource(R.string.quads)
+        "Full House" -> stringResource(R.string.full_house)
+        "Flush" -> stringResource(R.string.flush)
+        "Straight" -> stringResource(R.string.straight)
+        "Trips" -> stringResource(R.string.trips)
+        "Two Pair" -> stringResource(R.string.two_pair)
+        "Pair" -> stringResource(R.string.pair)
+        "High Card" -> stringResource(R.string.high_card)
+        else -> {
+            throw Error("Invalid hand")
+        }
+    }
+
+    Button(
+        modifier = modifier,
+        onClick = onClick
+    ) {
+        Text(label)
+    }
+}
+
 @Composable
 fun Game(modifier: Modifier = Modifier) {
     var hand by remember { mutableStateOf(generateRandomHand()) }
+
+    val bestHand = getBestHand(hand)
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -222,9 +307,7 @@ fun Game(modifier: Modifier = Modifier) {
     ) {
         Hand(hand)
         Spacer(modifier = Modifier.height(50.dp))
-        Button(onClick = { hand = generateRandomHand() }) {
-            Text("Next")
-        }
+        HandSelector(onClick = { hand = generateRandomHand() }, hand = bestHand)
     }
 }
 
