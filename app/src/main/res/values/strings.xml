@@ -9,4 +9,6 @@
     <string name="two_pair">Two Pair</string>
     <string name="pair">Pair</string>
     <string name="high_card">High Card</string>
+    <string name="score">Score:%1$s</string>
+    <string name="title">TheButton</string>
 </resources>

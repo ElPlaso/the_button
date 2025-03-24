@@ -7,21 +7,19 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -30,8 +28,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.button.ui.theme.ButtonTheme
 
 class MainActivity : ComponentActivity() {
@@ -198,7 +198,6 @@ fun Hand(hand: Array<Pair<String, String>>, modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier
             .fillMaxWidth()
-            .padding(paddingValues = PaddingValues(horizontal = 25.dp))
     ) {
         hand.forEach {
             val (suit, rank) = it
@@ -369,21 +368,32 @@ fun Game(modifier: Modifier = Modifier) {
     val handKinds = arrayOf(bestHand, secondHand, thirdHand)
     handKinds.shuffle()
 
+    var score by remember { mutableIntStateOf(0) }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier,
+        modifier = modifier
+            .padding(horizontal = 25.dp)
+            .padding(top = 50.dp)
+            .padding(bottom = 150.dp),
     ) {
-        Hand(hand, modifier = Modifier.weight(1f).padding(top = 75.dp))
+        Row(
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding()
+        ) {
+            Text(stringResource(R.string.title), fontSize = 24.sp, fontWeight = FontWeight.Medium)
+            Text(stringResource(R.string.score, score))
+        }
+        Hand(
+            hand, modifier = Modifier
+                .weight(1f)
+        )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(5.dp),
-            modifier = Modifier.padding(
-                paddingValues = PaddingValues(
-                    horizontal = 25.dp
-                )
-            ).padding(
-                bottom = 150.dp
-            )
         ) {
             handKinds.forEach {
                 HandSelector(onClick = { hand = generateRandomHand() }, hand = it)
