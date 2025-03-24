@@ -350,11 +350,19 @@ fun HandSelector(modifier: Modifier = Modifier, hand: String, onClick: () -> Uni
     }
 }
 
+private fun getDifferentHand(currentHands: Array<String>): String {
+    val playableHands = handRanking.filter { !currentHands.contains(it) }
+
+    return playableHands[playableHands.indices.random()]
+}
+
 @Composable
 fun Game(modifier: Modifier = Modifier) {
     var hand by remember { mutableStateOf(generateRandomHand()) }
 
     val bestHand = getBestHand(hand)
+    val secondHand = getDifferentHand(arrayOf(bestHand))
+    val thirdHand = getDifferentHand(arrayOf(bestHand, secondHand))
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -363,7 +371,11 @@ fun Game(modifier: Modifier = Modifier) {
     ) {
         Hand(hand)
         Spacer(modifier = Modifier.height(50.dp))
-        HandSelector(onClick = { hand = generateRandomHand() }, hand = bestHand)
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            HandSelector(onClick = { hand = generateRandomHand() }, hand = bestHand)
+            HandSelector(onClick = { hand = generateRandomHand() }, hand = secondHand)
+            HandSelector(onClick = { hand = generateRandomHand() }, hand = thirdHand)
+        }
     }
 }
 
