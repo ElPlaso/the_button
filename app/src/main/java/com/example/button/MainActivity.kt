@@ -8,13 +8,15 @@ import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -373,18 +375,30 @@ fun Game(modifier: Modifier = Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .padding(horizontal = 25.dp)
+            .padding(horizontal = 15.dp)
             .padding(top = 50.dp)
             .padding(bottom = 150.dp),
     ) {
-        Row(
-            verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding()
-        ) {
-            Text(stringResource(R.string.title), fontSize = 24.sp, fontWeight = FontWeight.Medium)
+        Column {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding()
+            ) {
+                Text(
+                    stringResource(R.string.title),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Medium
+                )
+                IconButton(onClick = { score = 0 }) {
+                    Icon(
+                        Icons.Rounded.Refresh,
+                        contentDescription = stringResource(R.string.refresh)
+                    )
+                }
+            }
             Text(stringResource(R.string.score, score))
         }
         Hand(
@@ -396,7 +410,18 @@ fun Game(modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.spacedBy(5.dp),
         ) {
             handKinds.forEach {
-                HandSelector(onClick = { hand = generateRandomHand() }, hand = it)
+                HandSelector(onClick = {
+                    if (it == bestHand) {
+                        score++
+
+                        if (score == 23456) {
+                            score = 0
+                        }
+                    } else if (score != 0) {
+                        score--
+                    }
+                    hand = generateRandomHand()
+                }, hand = it)
             }
         }
     }
