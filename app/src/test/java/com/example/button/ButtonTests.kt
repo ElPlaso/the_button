@@ -23,6 +23,21 @@ class ButtonTests {
     }
 
     @Test
+    fun get_best_hand_straight_flush() {
+        val hand = arrayOf(
+            Pair("clubs", "10"),
+            Pair("clubs", "J"),
+            Pair("clubs", "Q"),
+            Pair("clubs", "K"),
+            Pair("clubs", "A")
+        )
+
+        val expectedBestHand = "Straight Flush"
+        val actualBestHand = getBestHand(hand)
+        assertEquals(expectedBestHand, actualBestHand)
+    }
+
+    @Test
     fun get_best_hand_quads() {
         val hand = arrayOf(
             Pair("clubs", "A"),
@@ -63,6 +78,36 @@ class ButtonTests {
         )
 
         val expectedBestHand = "Flush"
+        val actualBestHand = getBestHand(hand)
+        assertEquals(expectedBestHand, actualBestHand)
+    }
+
+    @Test
+    fun get_best_hand_straight() {
+        val hand = arrayOf(
+            Pair("clubs", "10"),
+            Pair("clubs", "J"),
+            Pair("clubs", "Q"),
+            Pair("clubs", "K"),
+            Pair("diamonds", "A")
+        )
+
+        val expectedBestHand = "Straight"
+        val actualBestHand = getBestHand(hand)
+        assertEquals(expectedBestHand, actualBestHand)
+    }
+
+    @Test
+    fun get_best_hand_straight_low_ace() {
+        val hand = arrayOf(
+            Pair("clubs", "2"),
+            Pair("clubs", "3"),
+            Pair("clubs", "4"),
+            Pair("clubs", "5"),
+            Pair("diamonds", "A")
+        )
+
+        val expectedBestHand = "Straight"
         val actualBestHand = getBestHand(hand)
         assertEquals(expectedBestHand, actualBestHand)
     }

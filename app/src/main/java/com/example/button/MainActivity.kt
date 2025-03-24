@@ -221,17 +221,77 @@ val handRanking: Array<String> = arrayOf(
     "High Card"
 )
 
+val rankValues: Map<String, Int> = mapOf(
+    Pair("2", 2),
+    Pair("3", 3),
+    Pair("4", 4),
+    Pair("5", 5),
+    Pair("6", 6),
+    Pair("7", 7),
+    Pair("8", 8),
+    Pair("9", 9),
+    Pair("10", 10),
+    Pair("J", 11),
+    Pair("Q", 12),
+    Pair("K", 13),
+    Pair("A", 14),
+)
+
+private val cardComparator = Comparator<Pair<String, String>> { a, b ->
+    val aValue = rankValues[a.second] ?: throw Error("Invalid rank")
+    val bValue = rankValues[b.second] ?: throw Error("Invalid rank")
+
+    when {
+        (aValue == bValue) -> 0
+        (aValue < bValue) -> -1
+        else -> 1
+    }
+}
+
 @VisibleForTesting
 internal fun getBestHand(hand: Array<Pair<String, String>>): String {
-    // TODO: Handle straights
-    var seenSuit: String? = null
-    var isFlush = true
-    val rankOccurrences: MutableMap<String, Int> = mutableMapOf()
-
     // Check for rank occurrences
+    val rankOccurrences: MutableMap<String, Int> = mutableMapOf()
     hand.forEach {
         val newOccurrence = rankOccurrences[it.second]?.plus(1) ?: 1
         rankOccurrences[it.second] = newOccurrence
+    }
+
+    // Check for flush
+    var seenSuit: String? = null
+    var isFlush = true
+    run flushCheck@{
+        hand.forEach {
+            if (it.first != seenSuit && seenSuit != null) {
+                isFlush = false
+                return@flushCheck
+            }
+            seenSuit = it.first
+        }
+    }
+
+    // Check for straight
+    val sortedHand = hand.clone()
+    sortedHand.sortWith(cardComparator)
+    var previousValue: Int? = null
+    var isStraight = true
+    run straightCheck@{
+        sortedHand.forEach {
+            if (previousValue != null) {
+                val currentValue = rankValues[it.second] ?: throw Error("Invalid rank")
+
+                // Includes edge case for low Ace
+                if (currentValue - previousValue!! != 1 && !(currentValue == 14 && previousValue == 5)) {
+                    isStraight = false
+                    return@straightCheck
+                }
+            }
+            previousValue = rankValues[it.second]
+        }
+    }
+
+    if (isFlush && isStraight) {
+        return handRanking[0]
     }
 
     if (rankOccurrences.values.contains(4)) {
@@ -242,16 +302,12 @@ internal fun getBestHand(hand: Array<Pair<String, String>>): String {
         return handRanking[2]
     }
 
-    // Check for flush
-    hand.forEach {
-        if (it.first != seenSuit && seenSuit != null) {
-            isFlush = false
-        }
-        seenSuit = it.first
-    }
-
     if (isFlush) {
         return handRanking[3]
+    }
+
+    if (isStraight) {
+        return handRanking[4]
     }
 
     if (rankOccurrences.values.contains(3)) {
