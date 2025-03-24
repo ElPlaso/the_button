@@ -7,10 +7,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -196,7 +198,7 @@ fun Hand(hand: Array<Pair<String, String>>, modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier
             .fillMaxWidth()
-            .padding(paddingValues = PaddingValues(horizontal = 10.dp))
+            .padding(paddingValues = PaddingValues(horizontal = 25.dp))
     ) {
         hand.forEach {
             val (suit, rank) = it
@@ -343,7 +345,7 @@ fun HandSelector(modifier: Modifier = Modifier, hand: String, onClick: () -> Uni
     }
 
     Button(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         onClick = onClick
     ) {
         Text(label)
@@ -364,17 +366,28 @@ fun Game(modifier: Modifier = Modifier) {
     val secondHand = getDifferentHand(arrayOf(bestHand))
     val thirdHand = getDifferentHand(arrayOf(bestHand, secondHand))
 
+    val handKinds = arrayOf(bestHand, secondHand, thirdHand)
+    handKinds.shuffle()
+
     Column(
-        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
+        modifier = modifier,
     ) {
-        Hand(hand)
-        Spacer(modifier = Modifier.height(50.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            HandSelector(onClick = { hand = generateRandomHand() }, hand = bestHand)
-            HandSelector(onClick = { hand = generateRandomHand() }, hand = secondHand)
-            HandSelector(onClick = { hand = generateRandomHand() }, hand = thirdHand)
+        Hand(hand, modifier = Modifier.weight(1f).padding(top = 75.dp))
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(5.dp),
+            modifier = Modifier.padding(
+                paddingValues = PaddingValues(
+                    horizontal = 25.dp
+                )
+            ).padding(
+                bottom = 150.dp
+            )
+        ) {
+            handKinds.forEach {
+                HandSelector(onClick = { hand = generateRandomHand() }, hand = it)
+            }
         }
     }
 }
