@@ -49,119 +49,116 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+enum class Suit {
+    CLUBS, DIAMONDS, HEARTS, SPADES
+}
+
+enum class Rank {
+    TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE
+}
+
+enum class Hand {
+    STRAIGHT_FLUSH, QUADS, FULL_HOUSE, FLUSH, STRAIGHT, TRIPS, TWO_PAIR, PAIR, HIGH_CARD
+}
+
 @VisibleForTesting
-internal fun getCardImage(suit: String, rank: String): Int {
+internal fun getCardImage(suit: Suit, rank: Rank): Int {
     return when (suit) {
-        "clubs" -> getClubsImage(rank)
-        "diamonds" -> getDiamondsImage(rank)
-        "hearts" -> getHeartsImage(rank)
-        "spades" -> getSpadesImage(rank)
-        else -> {
-            throw Error("Invalid suit")
-        }
+        Suit.CLUBS -> getClubsImage(rank)
+        Suit.DIAMONDS -> getDiamondsImage(rank)
+        Suit.HEARTS -> getHeartsImage(rank)
+        Suit.SPADES -> getSpadesImage(rank)
     }
 }
 
-internal fun getClubsImage(rank: String): Int {
+internal fun getClubsImage(rank: Rank): Int {
     return when (rank) {
-        "2" -> R.drawable.two_of_clubs
-        "3" -> R.drawable.three_of_clubs
-        "4" -> R.drawable.four_of_clubs
-        "5" -> R.drawable.five_of_clubs
-        "6" -> R.drawable.six_of_clubs
-        "7" -> R.drawable.seven_of_clubs
-        "8" -> R.drawable.eight_of_clubs
-        "9" -> R.drawable.nine_of_clubs
-        "10" -> R.drawable.ten_of_clubs
-        "J" -> R.drawable.jack_of_clubs
-        "Q" -> R.drawable.queen_of_clubs
-        "K" -> R.drawable.king_of_clubs
-        "A" -> R.drawable.ace_of_clubs
-        else -> {
-            throw Error("Invalid rank")
-        }
+        Rank.TWO-> R.drawable.two_of_clubs
+        Rank.THREE-> R.drawable.three_of_clubs
+        Rank.FOUR-> R.drawable.four_of_clubs
+        Rank.FIVE-> R.drawable.five_of_clubs
+        Rank.SIX-> R.drawable.six_of_clubs
+        Rank.SEVEN-> R.drawable.seven_of_clubs
+        Rank.EIGHT-> R.drawable.eight_of_clubs
+        Rank.NINE-> R.drawable.nine_of_clubs
+        Rank.TEN-> R.drawable.ten_of_clubs
+        Rank.JACK-> R.drawable.jack_of_clubs
+        Rank.QUEEN-> R.drawable.queen_of_clubs
+        Rank.KING-> R.drawable.king_of_clubs
+        Rank.ACE-> R.drawable.ace_of_clubs
     }
 }
 
-internal fun getDiamondsImage(rank: String): Int {
+internal fun getDiamondsImage(rank: Rank): Int {
     return when (rank) {
-        "2" -> R.drawable.two_of_diamonds
-        "3" -> R.drawable.three_of_diamonds
-        "4" -> R.drawable.four_of_diamonds
-        "5" -> R.drawable.five_of_diamonds
-        "6" -> R.drawable.six_of_diamonds
-        "7" -> R.drawable.seven_of_diamonds
-        "8" -> R.drawable.eight_of_diamonds
-        "9" -> R.drawable.nine_of_diamonds
-        "10" -> R.drawable.ten_of_diamonds
-        "J" -> R.drawable.jack_of_diamonds
-        "Q" -> R.drawable.queen_of_diamonds
-        "K" -> R.drawable.king_of_diamonds
-        "A" -> R.drawable.ace_of_diamonds
-        else -> {
-            throw Error("Invalid rank")
-        }
+        Rank.TWO-> R.drawable.two_of_diamonds
+        Rank.THREE-> R.drawable.three_of_diamonds
+        Rank.FOUR-> R.drawable.four_of_diamonds
+        Rank.FIVE-> R.drawable.five_of_diamonds
+        Rank.SIX-> R.drawable.six_of_diamonds
+        Rank.SEVEN-> R.drawable.seven_of_diamonds
+        Rank.EIGHT-> R.drawable.eight_of_diamonds
+        Rank.NINE-> R.drawable.nine_of_diamonds
+        Rank.TEN-> R.drawable.ten_of_diamonds
+        Rank.JACK-> R.drawable.jack_of_diamonds
+        Rank.QUEEN-> R.drawable.queen_of_diamonds
+        Rank.KING-> R.drawable.king_of_diamonds
+        Rank.ACE-> R.drawable.ace_of_diamonds
     }
 }
 
-internal fun getHeartsImage(rank: String): Int {
+internal fun getHeartsImage(rank: Rank): Int {
     return when (rank) {
-        "2" -> R.drawable.two_of_hearts
-        "3" -> R.drawable.three_of_hearts
-        "4" -> R.drawable.four_of_hearts
-        "5" -> R.drawable.five_of_hearts
-        "6" -> R.drawable.six_of_hearts
-        "7" -> R.drawable.seven_of_hearts
-        "8" -> R.drawable.eight_of_hearts
-        "9" -> R.drawable.nine_of_hearts
-        "10" -> R.drawable.ten_of_hearts
-        "J" -> R.drawable.jack_of_hearts
-        "Q" -> R.drawable.queen_of_hearts
-        "K" -> R.drawable.king_of_hearts
-        "A" -> R.drawable.ace_of_hearts
-        else -> {
-            throw Error("Invalid rank")
-        }
+        Rank.TWO-> R.drawable.two_of_hearts
+        Rank.THREE-> R.drawable.three_of_hearts
+        Rank.FOUR-> R.drawable.four_of_hearts
+        Rank.FIVE-> R.drawable.five_of_hearts
+        Rank.SIX-> R.drawable.six_of_hearts
+        Rank.SEVEN-> R.drawable.seven_of_hearts
+        Rank.EIGHT-> R.drawable.eight_of_hearts
+        Rank.NINE-> R.drawable.nine_of_hearts
+        Rank.TEN-> R.drawable.ten_of_hearts
+        Rank.JACK-> R.drawable.jack_of_hearts
+        Rank.QUEEN-> R.drawable.queen_of_hearts
+        Rank.KING-> R.drawable.king_of_hearts
+        Rank.ACE-> R.drawable.ace_of_hearts
     }
 }
 
-internal fun getSpadesImage(rank: String): Int {
+internal fun getSpadesImage(rank: Rank): Int {
     return when (rank) {
-        "2" -> R.drawable.two_of_spades
-        "3" -> R.drawable.three_of_spades
-        "4" -> R.drawable.four_of_spades
-        "5" -> R.drawable.five_of_spades
-        "6" -> R.drawable.six_of_spades
-        "7" -> R.drawable.seven_of_spades
-        "8" -> R.drawable.eight_of_spades
-        "9" -> R.drawable.nine_of_spades
-        "10" -> R.drawable.ten_of_spades
-        "J" -> R.drawable.jack_of_spades
-        "Q" -> R.drawable.queen_of_spades
-        "K" -> R.drawable.king_of_spades
-        "A" -> R.drawable.ace_of_spades
-        else -> {
-            throw Error("Invalid rank")
-        }
+        Rank.TWO-> R.drawable.two_of_spades
+        Rank.THREE-> R.drawable.three_of_spades
+        Rank.FOUR-> R.drawable.four_of_spades
+        Rank.FIVE-> R.drawable.five_of_spades
+        Rank.SIX-> R.drawable.six_of_spades
+        Rank.SEVEN-> R.drawable.seven_of_spades
+        Rank.EIGHT-> R.drawable.eight_of_spades
+        Rank.NINE-> R.drawable.nine_of_spades
+        Rank.TEN-> R.drawable.ten_of_spades
+        Rank.JACK-> R.drawable.jack_of_spades
+        Rank.QUEEN-> R.drawable.queen_of_spades
+        Rank.KING-> R.drawable.king_of_spades
+        Rank.ACE-> R.drawable.ace_of_spades
     }
 }
 
 @Composable
-fun CardImage(suit: String, rank: String, modifier: Modifier = Modifier) {
+fun CardImage(suit: Suit, rank: Rank, modifier: Modifier = Modifier) {
     val cardImage = getCardImage(suit, rank)
 
     Image(
         painter = painterResource(cardImage),
-        contentDescription = rank + "of" + suit,
+        contentDescription = rank.toString().lowercase() + "of" + suit,
         contentScale = ContentScale.Fit,
         modifier = modifier,
     )
 
 }
 
-private fun generateRandomCard(previousCards: Array<Pair<String, String>>): Pair<String, String> {
-    val suits = arrayOf("clubs", "diamonds", "hearts", "spades")
-    val ranks = arrayOf("2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A")
+private fun generateRandomCard(previousCards: Array<Pair<Suit, Rank>>): Pair<Suit, Rank> {
+    val suits = enumValues<Suit>()
+    val ranks = enumValues<Rank>()
 
     val suitsLength = suits.size
     val ranksLength = ranks.size
@@ -179,8 +176,8 @@ private fun generateRandomCard(previousCards: Array<Pair<String, String>>): Pair
 }
 
 @VisibleForTesting
-internal fun generateRandomHand(): Array<Pair<String, String>> {
-    val hand: MutableList<Pair<String, String>> = mutableListOf()
+internal fun generateRandomHand(): Array<Pair<Suit, Rank>> {
+    val hand: MutableList<Pair<Suit, Rank>> = mutableListOf()
 
     repeat((0..4).count()) {
         val randomCard = generateRandomCard(hand.toTypedArray())
@@ -191,7 +188,7 @@ internal fun generateRandomHand(): Array<Pair<String, String>> {
 }
 
 @Composable
-fun Hand(hand: Array<Pair<String, String>>, modifier: Modifier = Modifier) {
+fun Hand(hand: Array<Pair<Suit, Rank>>, modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -209,35 +206,23 @@ fun Hand(hand: Array<Pair<String, String>>, modifier: Modifier = Modifier) {
     }
 }
 
-val handRanking: Array<String> = arrayOf(
-    "Straight Flush",
-    "Quads",
-    "Full House",
-    "Flush",
-    "Straight",
-    "Trips",
-    "Two Pair",
-    "Pair",
-    "High Card"
+val rankValues: Map<Rank, Int> = mapOf(
+    Pair(Rank.TWO, 2),
+    Pair(Rank.THREE, 3),
+    Pair(Rank.FOUR, 4),
+    Pair(Rank.FIVE, 5),
+    Pair(Rank.SIX, 6),
+    Pair(Rank.SEVEN, 7),
+    Pair(Rank.EIGHT, 8),
+    Pair(Rank.NINE, 9),
+    Pair(Rank.TEN, 10),
+    Pair(Rank.JACK, 11),
+    Pair(Rank.QUEEN, 12),
+    Pair(Rank.KING, 13),
+    Pair(Rank.ACE, 14),
 )
 
-val rankValues: Map<String, Int> = mapOf(
-    Pair("2", 2),
-    Pair("3", 3),
-    Pair("4", 4),
-    Pair("5", 5),
-    Pair("6", 6),
-    Pair("7", 7),
-    Pair("8", 8),
-    Pair("9", 9),
-    Pair("10", 10),
-    Pair("J", 11),
-    Pair("Q", 12),
-    Pair("K", 13),
-    Pair("A", 14),
-)
-
-private val cardComparator = Comparator<Pair<String, String>> { a, b ->
+private val cardComparator = Comparator<Pair<Suit, Rank>> { a, b ->
     val aValue = rankValues[a.second] ?: throw Error("Invalid rank")
     val bValue = rankValues[b.second] ?: throw Error("Invalid rank")
 
@@ -249,16 +234,16 @@ private val cardComparator = Comparator<Pair<String, String>> { a, b ->
 }
 
 @VisibleForTesting
-internal fun getBestHand(hand: Array<Pair<String, String>>): String {
+internal fun getBestHand(hand: Array<Pair<Suit, Rank>>): Hand {
     // Check for rank occurrences
-    val rankOccurrences: MutableMap<String, Int> = mutableMapOf()
+    val rankOccurrences: MutableMap<Rank, Int> = mutableMapOf()
     hand.forEach {
         val newOccurrence = rankOccurrences[it.second]?.plus(1) ?: 1
         rankOccurrences[it.second] = newOccurrence
     }
 
     // Check for flush
-    var seenSuit: String? = null
+    var seenSuit: Suit? = null
     var isFlush = true
     run flushCheck@{
         hand.forEach {
@@ -291,55 +276,52 @@ internal fun getBestHand(hand: Array<Pair<String, String>>): String {
     }
 
     if (isFlush && isStraight) {
-        return handRanking[0]
+        return Hand.STRAIGHT_FLUSH
     }
 
     if (rankOccurrences.values.contains(4)) {
-        return handRanking[1]
+        return Hand.QUADS
     }
 
     if (rankOccurrences.values.contains(3) && rankOccurrences.values.contains(2)) {
-        return handRanking[2]
+        return Hand.FULL_HOUSE
     }
 
     if (isFlush) {
-        return handRanking[3]
+        return Hand.FLUSH
     }
 
     if (isStraight) {
-        return handRanking[4]
+        return Hand.STRAIGHT
     }
 
     if (rankOccurrences.values.contains(3)) {
-        return handRanking[5]
+        return Hand.TRIPS
     }
 
     if (rankOccurrences.values.contains(2)) {
         if (rankOccurrences.values.filter { it == 2 }.size == 2) {
-            return handRanking[6]
+            return Hand.TWO_PAIR
         }
 
-        return handRanking[7]
+        return Hand.PAIR
     }
 
-    return handRanking[8]
+    return Hand.HIGH_CARD
 }
 
 @Composable
-fun HandSelector(modifier: Modifier = Modifier, hand: String, onClick: () -> Unit) {
+fun HandSelector(modifier: Modifier = Modifier, hand: Hand, onClick: () -> Unit) {
     val label = when (hand) {
-        "Straight Flush" -> stringResource(R.string.straight_flush)
-        "Quads" -> stringResource(R.string.quads)
-        "Full House" -> stringResource(R.string.full_house)
-        "Flush" -> stringResource(R.string.flush)
-        "Straight" -> stringResource(R.string.straight)
-        "Trips" -> stringResource(R.string.trips)
-        "Two Pair" -> stringResource(R.string.two_pair)
-        "Pair" -> stringResource(R.string.pair)
-        "High Card" -> stringResource(R.string.high_card)
-        else -> {
-            throw Error("Invalid hand")
-        }
+        Hand.STRAIGHT_FLUSH -> stringResource(R.string.straight_flush)
+        Hand.QUADS -> stringResource(R.string.quads)
+        Hand.FULL_HOUSE -> stringResource(R.string.full_house)
+        Hand.FLUSH -> stringResource(R.string.flush)
+        Hand.STRAIGHT -> stringResource(R.string.straight)
+        Hand.TRIPS -> stringResource(R.string.trips)
+        Hand.TWO_PAIR -> stringResource(R.string.two_pair)
+        Hand.PAIR -> stringResource(R.string.pair)
+        Hand.HIGH_CARD -> stringResource(R.string.high_card)
     }
 
     Button(
@@ -350,8 +332,8 @@ fun HandSelector(modifier: Modifier = Modifier, hand: String, onClick: () -> Uni
     }
 }
 
-private fun getDifferentHand(currentHands: Array<String>): String {
-    val playableHands = handRanking.filter { !currentHands.contains(it) }
+private fun getDifferentHand(currentHands: Array<Hand>): Hand {
+    val playableHands = enumValues<Hand>().filter { !currentHands.contains(it) }
 
     return playableHands[playableHands.indices.random()]
 }

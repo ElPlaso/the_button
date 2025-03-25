@@ -7,8 +7,8 @@ class ButtonTests {
 
     @Test
     fun get_ace_of_spades_image() {
-        val suit = "spades"
-        val rank = "A"
+        val suit = Suit.SPADES
+        val rank = Rank.ACE
 
         val expectedImage = R.drawable.ace_of_spades
         val actualImage = getCardImage(suit, rank)
@@ -25,14 +25,14 @@ class ButtonTests {
     @Test
     fun get_best_hand_straight_flush() {
         val hand = arrayOf(
-            Pair("clubs", "10"),
-            Pair("clubs", "J"),
-            Pair("clubs", "Q"),
-            Pair("clubs", "K"),
-            Pair("clubs", "A")
+            Pair(Suit.CLUBS, Rank.TEN),
+            Pair(Suit.CLUBS, Rank.JACK),
+            Pair(Suit.CLUBS, Rank.QUEEN),
+            Pair(Suit.CLUBS, Rank.KING),
+            Pair(Suit.CLUBS, Rank.ACE)
         )
 
-        val expectedBestHand = "Straight Flush"
+        val expectedBestHand = Hand.STRAIGHT_FLUSH
         val actualBestHand = getBestHand(hand)
         assertEquals(expectedBestHand, actualBestHand)
     }
@@ -40,14 +40,14 @@ class ButtonTests {
     @Test
     fun get_best_hand_quads() {
         val hand = arrayOf(
-            Pair("clubs", "A"),
-            Pair("diamonds", "A"),
-            Pair("hearts", "A"),
-            Pair("spades", "A"),
-            Pair("spades", "K")
+            Pair(Suit.CLUBS, Rank.ACE),
+            Pair(Suit.DIAMONDS, Rank.ACE),
+            Pair(Suit.HEARTS, Rank.ACE),
+            Pair(Suit.SPADES, Rank.ACE),
+            Pair(Suit.SPADES, Rank.KING)
         )
 
-        val expectedBestHand = "Quads"
+        val expectedBestHand = Hand.QUADS
         val actualBestHand = getBestHand(hand)
         assertEquals(expectedBestHand, actualBestHand)
     }
@@ -55,14 +55,14 @@ class ButtonTests {
     @Test
     fun get_best_hand_full_house() {
         val hand = arrayOf(
-            Pair("clubs", "A"),
-            Pair("diamonds", "A"),
-            Pair("hearts", "A"),
-            Pair("hearts", "K"),
-            Pair("spades", "K")
+            Pair(Suit.CLUBS, Rank.ACE),
+            Pair(Suit.DIAMONDS, Rank.ACE),
+            Pair(Suit.HEARTS, Rank.ACE),
+            Pair(Suit.HEARTS, Rank.KING),
+            Pair(Suit.SPADES, Rank.KING)
         )
 
-        val expectedBestHand = "Full House"
+        val expectedBestHand = Hand.FULL_HOUSE
         val actualBestHand = getBestHand(hand)
         assertEquals(expectedBestHand, actualBestHand)
     }
@@ -70,14 +70,14 @@ class ButtonTests {
     @Test
     fun get_best_hand_flush() {
         val hand = arrayOf(
-            Pair("spades", "8"),
-            Pair("spades", "9"),
-            Pair("spades", "10"),
-            Pair("spades", "J"),
-            Pair("spades", "A")
+            Pair(Suit.SPADES, Rank.EIGHT),
+            Pair(Suit.SPADES, Rank.NINE),
+            Pair(Suit.SPADES, Rank.TEN),
+            Pair(Suit.SPADES, Rank.JACK),
+            Pair(Suit.SPADES, Rank.ACE)
         )
 
-        val expectedBestHand = "Flush"
+        val expectedBestHand = Hand.FLUSH
         val actualBestHand = getBestHand(hand)
         assertEquals(expectedBestHand, actualBestHand)
     }
@@ -85,14 +85,14 @@ class ButtonTests {
     @Test
     fun get_best_hand_straight() {
         val hand = arrayOf(
-            Pair("clubs", "10"),
-            Pair("clubs", "J"),
-            Pair("clubs", "Q"),
-            Pair("clubs", "K"),
-            Pair("diamonds", "A")
+            Pair(Suit.CLUBS, Rank.TEN),
+            Pair(Suit.CLUBS, Rank.JACK),
+            Pair(Suit.CLUBS, Rank.QUEEN),
+            Pair(Suit.CLUBS, Rank.KING),
+            Pair(Suit.DIAMONDS, Rank.ACE)
         )
 
-        val expectedBestHand = "Straight"
+        val expectedBestHand = Hand.STRAIGHT
         val actualBestHand = getBestHand(hand)
         assertEquals(expectedBestHand, actualBestHand)
     }
@@ -100,14 +100,14 @@ class ButtonTests {
     @Test
     fun get_best_hand_straight_low_ace() {
         val hand = arrayOf(
-            Pair("clubs", "2"),
-            Pair("clubs", "3"),
-            Pair("clubs", "4"),
-            Pair("clubs", "5"),
-            Pair("diamonds", "A")
+            Pair(Suit.CLUBS, Rank.TWO),
+            Pair(Suit.CLUBS, Rank.THREE),
+            Pair(Suit.CLUBS, Rank.FOUR),
+            Pair(Suit.CLUBS, Rank.FIVE),
+            Pair(Suit.DIAMONDS, Rank.ACE)
         )
 
-        val expectedBestHand = "Straight"
+        val expectedBestHand = Hand.STRAIGHT
         val actualBestHand = getBestHand(hand)
         assertEquals(expectedBestHand, actualBestHand)
     }
