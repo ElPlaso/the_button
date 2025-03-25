@@ -12,13 +12,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -392,11 +389,11 @@ fun Game(modifier: Modifier = Modifier) {
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium
                 )
-                IconButton(onClick = { score = 0 }) {
-                    Icon(
-                        Icons.Rounded.Refresh,
-                        contentDescription = stringResource(R.string.refresh)
-                    )
+                TextButton(onClick = {
+                    score = 0
+                    hand = generateRandomHand()
+                }) {
+                    Text(stringResource(R.string.restart))
                 }
             }
             Text(stringResource(R.string.score, score))
