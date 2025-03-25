@@ -9,10 +9,17 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -25,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,8 +49,9 @@ class MainActivity : ComponentActivity() {
             ButtonTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
                 ) {
-                    Game()
+                    ButtonApp()
                 }
             }
         }
@@ -73,73 +82,73 @@ internal fun getCardImage(suit: Suit, rank: Rank): Int {
 
 internal fun getClubsImage(rank: Rank): Int {
     return when (rank) {
-        Rank.TWO-> R.drawable.two_of_clubs
-        Rank.THREE-> R.drawable.three_of_clubs
-        Rank.FOUR-> R.drawable.four_of_clubs
-        Rank.FIVE-> R.drawable.five_of_clubs
-        Rank.SIX-> R.drawable.six_of_clubs
-        Rank.SEVEN-> R.drawable.seven_of_clubs
-        Rank.EIGHT-> R.drawable.eight_of_clubs
-        Rank.NINE-> R.drawable.nine_of_clubs
-        Rank.TEN-> R.drawable.ten_of_clubs
-        Rank.JACK-> R.drawable.jack_of_clubs
-        Rank.QUEEN-> R.drawable.queen_of_clubs
-        Rank.KING-> R.drawable.king_of_clubs
-        Rank.ACE-> R.drawable.ace_of_clubs
+        Rank.TWO -> R.drawable.two_of_clubs
+        Rank.THREE -> R.drawable.three_of_clubs
+        Rank.FOUR -> R.drawable.four_of_clubs
+        Rank.FIVE -> R.drawable.five_of_clubs
+        Rank.SIX -> R.drawable.six_of_clubs
+        Rank.SEVEN -> R.drawable.seven_of_clubs
+        Rank.EIGHT -> R.drawable.eight_of_clubs
+        Rank.NINE -> R.drawable.nine_of_clubs
+        Rank.TEN -> R.drawable.ten_of_clubs
+        Rank.JACK -> R.drawable.jack_of_clubs
+        Rank.QUEEN -> R.drawable.queen_of_clubs
+        Rank.KING -> R.drawable.king_of_clubs
+        Rank.ACE -> R.drawable.ace_of_clubs
     }
 }
 
 internal fun getDiamondsImage(rank: Rank): Int {
     return when (rank) {
-        Rank.TWO-> R.drawable.two_of_diamonds
-        Rank.THREE-> R.drawable.three_of_diamonds
-        Rank.FOUR-> R.drawable.four_of_diamonds
-        Rank.FIVE-> R.drawable.five_of_diamonds
-        Rank.SIX-> R.drawable.six_of_diamonds
-        Rank.SEVEN-> R.drawable.seven_of_diamonds
-        Rank.EIGHT-> R.drawable.eight_of_diamonds
-        Rank.NINE-> R.drawable.nine_of_diamonds
-        Rank.TEN-> R.drawable.ten_of_diamonds
-        Rank.JACK-> R.drawable.jack_of_diamonds
-        Rank.QUEEN-> R.drawable.queen_of_diamonds
-        Rank.KING-> R.drawable.king_of_diamonds
-        Rank.ACE-> R.drawable.ace_of_diamonds
+        Rank.TWO -> R.drawable.two_of_diamonds
+        Rank.THREE -> R.drawable.three_of_diamonds
+        Rank.FOUR -> R.drawable.four_of_diamonds
+        Rank.FIVE -> R.drawable.five_of_diamonds
+        Rank.SIX -> R.drawable.six_of_diamonds
+        Rank.SEVEN -> R.drawable.seven_of_diamonds
+        Rank.EIGHT -> R.drawable.eight_of_diamonds
+        Rank.NINE -> R.drawable.nine_of_diamonds
+        Rank.TEN -> R.drawable.ten_of_diamonds
+        Rank.JACK -> R.drawable.jack_of_diamonds
+        Rank.QUEEN -> R.drawable.queen_of_diamonds
+        Rank.KING -> R.drawable.king_of_diamonds
+        Rank.ACE -> R.drawable.ace_of_diamonds
     }
 }
 
 internal fun getHeartsImage(rank: Rank): Int {
     return when (rank) {
-        Rank.TWO-> R.drawable.two_of_hearts
-        Rank.THREE-> R.drawable.three_of_hearts
-        Rank.FOUR-> R.drawable.four_of_hearts
-        Rank.FIVE-> R.drawable.five_of_hearts
-        Rank.SIX-> R.drawable.six_of_hearts
-        Rank.SEVEN-> R.drawable.seven_of_hearts
-        Rank.EIGHT-> R.drawable.eight_of_hearts
-        Rank.NINE-> R.drawable.nine_of_hearts
-        Rank.TEN-> R.drawable.ten_of_hearts
-        Rank.JACK-> R.drawable.jack_of_hearts
-        Rank.QUEEN-> R.drawable.queen_of_hearts
-        Rank.KING-> R.drawable.king_of_hearts
-        Rank.ACE-> R.drawable.ace_of_hearts
+        Rank.TWO -> R.drawable.two_of_hearts
+        Rank.THREE -> R.drawable.three_of_hearts
+        Rank.FOUR -> R.drawable.four_of_hearts
+        Rank.FIVE -> R.drawable.five_of_hearts
+        Rank.SIX -> R.drawable.six_of_hearts
+        Rank.SEVEN -> R.drawable.seven_of_hearts
+        Rank.EIGHT -> R.drawable.eight_of_hearts
+        Rank.NINE -> R.drawable.nine_of_hearts
+        Rank.TEN -> R.drawable.ten_of_hearts
+        Rank.JACK -> R.drawable.jack_of_hearts
+        Rank.QUEEN -> R.drawable.queen_of_hearts
+        Rank.KING -> R.drawable.king_of_hearts
+        Rank.ACE -> R.drawable.ace_of_hearts
     }
 }
 
 internal fun getSpadesImage(rank: Rank): Int {
     return when (rank) {
-        Rank.TWO-> R.drawable.two_of_spades
-        Rank.THREE-> R.drawable.three_of_spades
-        Rank.FOUR-> R.drawable.four_of_spades
-        Rank.FIVE-> R.drawable.five_of_spades
-        Rank.SIX-> R.drawable.six_of_spades
-        Rank.SEVEN-> R.drawable.seven_of_spades
-        Rank.EIGHT-> R.drawable.eight_of_spades
-        Rank.NINE-> R.drawable.nine_of_spades
-        Rank.TEN-> R.drawable.ten_of_spades
-        Rank.JACK-> R.drawable.jack_of_spades
-        Rank.QUEEN-> R.drawable.queen_of_spades
-        Rank.KING-> R.drawable.king_of_spades
-        Rank.ACE-> R.drawable.ace_of_spades
+        Rank.TWO -> R.drawable.two_of_spades
+        Rank.THREE -> R.drawable.three_of_spades
+        Rank.FOUR -> R.drawable.four_of_spades
+        Rank.FIVE -> R.drawable.five_of_spades
+        Rank.SIX -> R.drawable.six_of_spades
+        Rank.SEVEN -> R.drawable.seven_of_spades
+        Rank.EIGHT -> R.drawable.eight_of_spades
+        Rank.NINE -> R.drawable.nine_of_spades
+        Rank.TEN -> R.drawable.ten_of_spades
+        Rank.JACK -> R.drawable.jack_of_spades
+        Rank.QUEEN -> R.drawable.queen_of_spades
+        Rank.KING -> R.drawable.king_of_spades
+        Rank.ACE -> R.drawable.ace_of_spades
     }
 }
 
@@ -355,7 +364,7 @@ fun Game(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .padding(horizontal = 15.dp)
-            .padding(top = 50.dp)
+            .padding(top = 15.dp)
             .padding(bottom = 150.dp),
     ) {
         Column {
@@ -403,6 +412,25 @@ fun Game(modifier: Modifier = Modifier) {
                 }, hand = it)
             }
         }
+    }
+}
+
+@Composable
+fun ButtonApp() {
+    val layoutDirection = LocalLayoutDirection.current
+    Surface(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+            .padding(
+                start = WindowInsets.safeDrawing.asPaddingValues()
+                    .calculateStartPadding(layoutDirection),
+                end = WindowInsets.safeDrawing.asPaddingValues()
+                    .calculateEndPadding(layoutDirection),
+            ),
+    )
+    {
+        Game()
     }
 }
 
