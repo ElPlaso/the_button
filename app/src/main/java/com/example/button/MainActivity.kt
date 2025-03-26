@@ -39,6 +39,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.button.data.CardData
+import com.example.button.data.Game
+import com.example.button.model.Card
+import com.example.button.model.Hand
+import com.example.button.model.Rank
+import com.example.button.model.Suit
 import com.example.button.ui.theme.ButtonTheme
 
 class MainActivity : ComponentActivity() {
@@ -58,25 +64,13 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-enum class Suit {
-    CLUBS, DIAMONDS, HEARTS, SPADES
-}
-
-enum class Rank {
-    TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE
-}
-
-enum class Hand {
-    STRAIGHT_FLUSH, QUADS, FULL_HOUSE, FLUSH, STRAIGHT, TRIPS, TWO_PAIR, PAIR, HIGH_CARD
-}
-
 @VisibleForTesting
-internal fun getCardImage(suit: Suit, rank: Rank): Int {
-    return when (suit) {
-        Suit.CLUBS -> getClubsImage(rank)
-        Suit.DIAMONDS -> getDiamondsImage(rank)
-        Suit.HEARTS -> getHeartsImage(rank)
-        Suit.SPADES -> getSpadesImage(rank)
+internal fun getCardImage(card: Card): Int {
+    return when (card.suit) {
+        Suit.CLUBS -> getClubsImage(card.rank)
+        Suit.DIAMONDS -> getDiamondsImage(card.rank)
+        Suit.HEARTS -> getHeartsImage(card.rank)
+        Suit.SPADES -> getSpadesImage(card.rank)
     }
 }
 
@@ -153,51 +147,20 @@ internal fun getSpadesImage(rank: Rank): Int {
 }
 
 @Composable
-fun CardImage(suit: Suit, rank: Rank, modifier: Modifier = Modifier) {
-    val cardImage = getCardImage(suit, rank)
+fun CardImage(card: Card, modifier: Modifier = Modifier) {
+    val cardImage = getCardImage(card)
 
     Image(
         painter = painterResource(cardImage),
-        contentDescription = rank.toString().lowercase() + "of" + suit,
+        contentDescription = card.rank.toString().lowercase() + "of" + card.suit,
         contentScale = ContentScale.Fit,
         modifier = modifier,
     )
 
 }
 
-private fun generateRandomCard(previousCards: Array<Pair<Suit, Rank>>): Pair<Suit, Rank> {
-    val suits = enumValues<Suit>()
-    val ranks = enumValues<Rank>()
-
-    val suitsLength = suits.size
-    val ranksLength = ranks.size
-
-    while (true) {
-        val randomSuit = suits[((0..<suitsLength).random())]
-        val randomRank = ranks[((0..<ranksLength).random())]
-
-        val card = Pair(randomSuit, randomRank)
-
-        if (!previousCards.contains(card)) {
-            return card
-        }
-    }
-}
-
-@VisibleForTesting
-internal fun generateRandomHand(): Array<Pair<Suit, Rank>> {
-    val hand: MutableList<Pair<Suit, Rank>> = mutableListOf()
-
-    repeat((0..4).count()) {
-        val randomCard = generateRandomCard(hand.toTypedArray())
-        hand += randomCard
-    }
-
-    return hand.toTypedArray()
-}
-
 @Composable
-fun Hand(hand: Array<Pair<Suit, Rank>>, modifier: Modifier = Modifier) {
+fun Hand(hand: Array<Card>, modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -205,118 +168,14 @@ fun Hand(hand: Array<Pair<Suit, Rank>>, modifier: Modifier = Modifier) {
             .fillMaxWidth()
     ) {
         hand.forEach {
-            val (suit, rank) = it
+            val card = it
             CardImage(
-                suit, rank, modifier
+                card, modifier
                     .fillMaxWidth()
                     .weight(1f)
             )
         }
     }
-}
-
-val rankValues: Map<Rank, Int> = mapOf(
-    Pair(Rank.TWO, 2),
-    Pair(Rank.THREE, 3),
-    Pair(Rank.FOUR, 4),
-    Pair(Rank.FIVE, 5),
-    Pair(Rank.SIX, 6),
-    Pair(Rank.SEVEN, 7),
-    Pair(Rank.EIGHT, 8),
-    Pair(Rank.NINE, 9),
-    Pair(Rank.TEN, 10),
-    Pair(Rank.JACK, 11),
-    Pair(Rank.QUEEN, 12),
-    Pair(Rank.KING, 13),
-    Pair(Rank.ACE, 14),
-)
-
-private val cardComparator = Comparator<Pair<Suit, Rank>> { a, b ->
-    val aValue = rankValues[a.second] ?: throw Error("Invalid rank")
-    val bValue = rankValues[b.second] ?: throw Error("Invalid rank")
-
-    when {
-        (aValue == bValue) -> 0
-        (aValue < bValue) -> -1
-        else -> 1
-    }
-}
-
-@VisibleForTesting
-internal fun getBestHand(hand: Array<Pair<Suit, Rank>>): Hand {
-    // Check for rank occurrences
-    val rankOccurrences: MutableMap<Rank, Int> = mutableMapOf()
-    hand.forEach {
-        val newOccurrence = rankOccurrences[it.second]?.plus(1) ?: 1
-        rankOccurrences[it.second] = newOccurrence
-    }
-
-    // Check for flush
-    var seenSuit: Suit? = null
-    var isFlush = true
-    run flushCheck@{
-        hand.forEach {
-            if (it.first != seenSuit && seenSuit != null) {
-                isFlush = false
-                return@flushCheck
-            }
-            seenSuit = it.first
-        }
-    }
-
-    // Check for straight
-    val sortedHand = hand.clone()
-    sortedHand.sortWith(cardComparator)
-    var previousValue: Int? = null
-    var isStraight = true
-    run straightCheck@{
-        sortedHand.forEach {
-            if (previousValue != null) {
-                val currentValue = rankValues[it.second] ?: throw Error("Invalid rank")
-
-                // Includes edge case for low Ace
-                if (currentValue - previousValue!! != 1 && !(currentValue == 14 && previousValue == 5)) {
-                    isStraight = false
-                    return@straightCheck
-                }
-            }
-            previousValue = rankValues[it.second]
-        }
-    }
-
-    if (isFlush && isStraight) {
-        return Hand.STRAIGHT_FLUSH
-    }
-
-    if (rankOccurrences.values.contains(4)) {
-        return Hand.QUADS
-    }
-
-    if (rankOccurrences.values.contains(3) && rankOccurrences.values.contains(2)) {
-        return Hand.FULL_HOUSE
-    }
-
-    if (isFlush) {
-        return Hand.FLUSH
-    }
-
-    if (isStraight) {
-        return Hand.STRAIGHT
-    }
-
-    if (rankOccurrences.values.contains(3)) {
-        return Hand.TRIPS
-    }
-
-    if (rankOccurrences.values.contains(2)) {
-        if (rankOccurrences.values.filter { it == 2 }.size == 2) {
-            return Hand.TWO_PAIR
-        }
-
-        return Hand.PAIR
-    }
-
-    return Hand.HIGH_CARD
 }
 
 @Composable
@@ -341,24 +200,19 @@ fun HandSelector(modifier: Modifier = Modifier, hand: Hand, onClick: () -> Unit)
     }
 }
 
-private fun getDifferentHand(currentHands: Array<Hand>): Hand {
-    val playableHands = enumValues<Hand>().filter { !currentHands.contains(it) }
-
-    return playableHands[playableHands.indices.random()]
-}
-
 @Composable
 fun Game(modifier: Modifier = Modifier) {
-    var hand by remember { mutableStateOf(generateRandomHand()) }
+    val game = Game
+    var hand by remember { mutableStateOf(CardData().generateRandomHand()) }
 
-    val bestHand = getBestHand(hand)
-    val secondHand = getDifferentHand(arrayOf(bestHand))
-    val thirdHand = getDifferentHand(arrayOf(bestHand, secondHand))
+    val bestHand = CardData().getBestHand(hand)
+    val secondHand = CardData().getDifferentHand(arrayOf(bestHand))
+    val thirdHand = CardData().getDifferentHand(arrayOf(bestHand, secondHand))
 
     val handKinds = arrayOf(bestHand, secondHand, thirdHand)
     handKinds.shuffle()
 
-    var score by remember { mutableIntStateOf(0) }
+    var score by remember { mutableIntStateOf(game.getScore()) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -381,8 +235,9 @@ fun Game(modifier: Modifier = Modifier) {
                     fontWeight = FontWeight.Medium
                 )
                 TextButton(onClick = {
-                    score = 0
-                    hand = generateRandomHand()
+                    game.restart()
+                    score = game.getScore()
+                    hand = CardData().generateRandomHand()
                 }) {
                     Text(stringResource(R.string.restart))
                 }
@@ -399,16 +254,9 @@ fun Game(modifier: Modifier = Modifier) {
         ) {
             handKinds.forEach {
                 HandSelector(onClick = {
-                    if (it == bestHand) {
-                        score++
-
-                        if (score == 23456) {
-                            score = 0
-                        }
-                    } else if (score != 0) {
-                        score--
-                    }
-                    hand = generateRandomHand()
+                    game.checkSelectedHand(it, bestHand)
+                    score = game.getScore()
+                    hand = CardData().generateRandomHand()
                 }, hand = it)
             }
         }
