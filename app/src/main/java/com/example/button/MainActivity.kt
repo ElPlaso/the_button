@@ -28,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -203,7 +204,7 @@ fun HandSelector(modifier: Modifier = Modifier, hand: Hand, onClick: () -> Unit)
 @Composable
 fun Game(modifier: Modifier = Modifier) {
     val game = Game
-    var hand by remember { mutableStateOf(CardData().generateRandomHand()) }
+    var hand by rememberSaveable { mutableStateOf(CardData().generateRandomHand()) }
 
     val bestHand = CardData().getBestHand(hand)
     val secondHand = CardData().getDifferentHand(arrayOf(bestHand))
@@ -212,7 +213,7 @@ fun Game(modifier: Modifier = Modifier) {
     val handKinds = arrayOf(bestHand, secondHand, thirdHand)
     handKinds.shuffle()
 
-    var score by remember { mutableIntStateOf(game.getScore()) }
+    var score by rememberSaveable { mutableIntStateOf(game.getScore()) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
