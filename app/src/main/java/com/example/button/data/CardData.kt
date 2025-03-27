@@ -25,7 +25,7 @@ class CardData {
         }
     }
 
-    fun generateRandomHand(): Array<Card> {
+    fun generateRandomBoard(): Array<Card> {
         val hand: MutableList<Card> = mutableListOf()
 
         repeat((0..4).count()) {
@@ -47,7 +47,7 @@ class CardData {
         }
     }
 
-    fun getBestHand(hand: Array<Card>): Hand {
+    fun calculateBestHand(hand: Array<Card>): Hand {
         // Check for rank occurrences
         val rankOccurrences: MutableMap<Rank, Int> = mutableMapOf()
         hand.forEach {

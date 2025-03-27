@@ -24,7 +24,7 @@ class ButtonTests {
     @Test
     fun get_length_of_random_hand() {
         val expectedLength = 5
-        val actualLength = CardData().generateRandomHand().size
+        val actualLength = CardData().generateRandomBoard().size
         assertEquals(expectedLength, actualLength)
     }
 
@@ -39,7 +39,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.STRAIGHT_FLUSH
-        val actualBestHand = CardData().getBestHand(hand)
+        val actualBestHand = CardData().calculateBestHand(hand)
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -54,7 +54,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.QUADS
-        val actualBestHand = CardData().getBestHand(hand)
+        val actualBestHand = CardData().calculateBestHand(hand)
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -69,7 +69,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.FULL_HOUSE
-        val actualBestHand = CardData().getBestHand(hand)
+        val actualBestHand = CardData().calculateBestHand(hand)
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -84,7 +84,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.FLUSH
-        val actualBestHand = CardData().getBestHand(hand)
+        val actualBestHand = CardData().calculateBestHand(hand)
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -99,7 +99,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.STRAIGHT
-        val actualBestHand = CardData().getBestHand(hand)
+        val actualBestHand = CardData().calculateBestHand(hand)
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -114,7 +114,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.STRAIGHT
-        val actualBestHand = CardData().getBestHand(hand)
+        val actualBestHand = CardData().calculateBestHand(hand)
         assertEquals(expectedBestHand, actualBestHand)
     }
 }

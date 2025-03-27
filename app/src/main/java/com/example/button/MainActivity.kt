@@ -24,12 +24,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -40,12 +36,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.button.data.CardData
-import com.example.button.data.Game
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.button.model.Card
 import com.example.button.model.Hand
 import com.example.button.model.Rank
 import com.example.button.model.Suit
+import com.example.button.ui.GameViewModel
 import com.example.button.ui.theme.ButtonTheme
 
 class MainActivity : ComponentActivity() {
@@ -161,7 +157,7 @@ fun CardImage(card: Card, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Hand(hand: Array<Card>, modifier: Modifier = Modifier) {
+fun Board(hand: Array<Card>, modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -202,18 +198,8 @@ fun HandSelector(modifier: Modifier = Modifier, hand: Hand, onClick: () -> Unit)
 }
 
 @Composable
-fun Game(modifier: Modifier = Modifier) {
-    val game = Game
-    var hand by rememberSaveable { mutableStateOf(CardData().generateRandomHand()) }
-
-    val bestHand = CardData().getBestHand(hand)
-    val secondHand = CardData().getDifferentHand(arrayOf(bestHand))
-    val thirdHand = CardData().getDifferentHand(arrayOf(bestHand, secondHand))
-
-    val handKinds = arrayOf(bestHand, secondHand, thirdHand)
-    handKinds.shuffle()
-
-    var score by rememberSaveable { mutableIntStateOf(game.getScore()) }
+fun Game(modifier: Modifier = Modifier, gameViewModel: GameViewModel = viewModel()) {
+    val gameUiState by gameViewModel.uiState.collectAsState()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -236,28 +222,24 @@ fun Game(modifier: Modifier = Modifier) {
                     fontWeight = FontWeight.Medium
                 )
                 TextButton(onClick = {
-                    game.restart()
-                    score = game.getScore()
-                    hand = CardData().generateRandomHand()
+                    gameViewModel.resetGame()
                 }) {
                     Text(stringResource(R.string.restart))
                 }
             }
-            Text(stringResource(R.string.score, score))
+            Text(stringResource(R.string.score, gameUiState.score))
         }
-        Hand(
-            hand, modifier = Modifier
+        Board(
+            gameUiState.currentBoard, modifier = Modifier
                 .weight(1f)
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(5.dp),
         ) {
-            handKinds.forEach {
+            gameUiState.currentHands.forEach {
                 HandSelector(onClick = {
-                    game.checkSelectedHand(it, bestHand)
-                    score = game.getScore()
-                    hand = CardData().generateRandomHand()
+                    gameViewModel.checkSelectedHand(it)
                 }, hand = it)
             }
         }
