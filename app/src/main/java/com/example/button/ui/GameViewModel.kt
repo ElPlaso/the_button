@@ -48,15 +48,24 @@ class GameViewModel : ViewModel() {
     }
 
     private fun updateGameState(updatedScore: Int) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                currentBoard = getRandomBoard(),
-                currentHands = getHands(),
-                currentBestHand = getBestHand(),
-                score = updatedScore,
-                isGameOver = updatedScore == 14,
-            )
+        if (updatedScore == 14) {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    score = updatedScore,
+                    isGameOver = true,
+                )
+            }
+        } else {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    currentBoard = getRandomBoard(),
+                    currentHands = getHands(),
+                    currentBestHand = getBestHand(),
+                    score = updatedScore,
+                )
+            }
         }
+
     }
 
 
