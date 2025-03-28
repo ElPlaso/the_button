@@ -40,10 +40,6 @@ class GameViewModel : ViewModel() {
         var score = _uiState.value.score
         if (hand == currentBestHand) {
             score++
-
-            if (score == 23456) {
-                score = 0
-            }
         } else if (score != 0) {
             score--
         }
@@ -58,6 +54,7 @@ class GameViewModel : ViewModel() {
                 currentHands = getHands(),
                 currentBestHand = getBestHand(),
                 score = updatedScore,
+                isGameOver = updatedScore == 14,
             )
         }
     }
@@ -70,6 +67,7 @@ class GameViewModel : ViewModel() {
                 currentHands = getHands(),
                 currentBestHand = getBestHand(),
                 score = 0,
+                isGameOver = false,
             )
         }
     }

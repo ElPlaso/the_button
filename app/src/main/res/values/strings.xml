@@ -9,7 +9,11 @@
     <string name="two_pair">Two Pair</string>
     <string name="pair">Pair</string>
     <string name="high_card">High Card</string>
-    <string name="score">Score:%1$s</string>
+    <string name="score">Score: %d/14</string>
     <string name="title">TheButton</string>
     <string name="restart">Restart</string>
+    <string name="congratulations">Congratulations!</string>
+    <string name="game_over_text">You reached the max score of 14</string>
+    <string name="exit">Exit</string>
+    <string name="play_again">Play Again</string>
 </resources>

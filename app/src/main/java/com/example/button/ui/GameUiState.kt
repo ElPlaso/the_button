@@ -8,6 +8,7 @@ data class GameUiState(
     val currentHands: Array<Hand> = arrayOf(),
     val currentBestHand: Hand? = null,
     val score: Int = 0,
+    val isGameOver: Boolean = false,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

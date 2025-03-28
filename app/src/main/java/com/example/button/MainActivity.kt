@@ -1,5 +1,6 @@
 package com.example.button
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -29,6 +31,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -244,6 +247,41 @@ fun Game(modifier: Modifier = Modifier, gameViewModel: GameViewModel = viewModel
             }
         }
     }
+
+    if (gameUiState.isGameOver) {
+        FinalScoreDialog(
+            onPlayAgain = { gameViewModel.resetGame() }
+        )
+    }
+}
+
+@Composable
+private fun FinalScoreDialog(
+    onPlayAgain: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val activity = (LocalContext.current as Activity)
+
+    AlertDialog(
+        onDismissRequest = { },
+        title = { Text(text = stringResource(R.string.congratulations)) },
+        text = { Text(text = stringResource(R.string.game_over_text)) },
+        modifier = modifier,
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    activity.finish()
+                }
+            ) {
+                Text(text = stringResource(R.string.exit))
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onPlayAgain) {
+                Text(text = stringResource(R.string.play_again))
+            }
+        }
+    )
 }
 
 @Composable
