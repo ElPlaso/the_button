@@ -19,9 +19,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -35,6 +39,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -55,7 +60,7 @@ class MainActivity : ComponentActivity() {
             ButtonTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = colorScheme.background
                 ) {
                     ButtonApp()
                 }
@@ -163,7 +168,7 @@ fun CardImage(card: Card, modifier: Modifier = Modifier) {
 fun Board(hand: Array<Card>, modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(1.dp),
         modifier = modifier
             .fillMaxWidth()
     ) {
@@ -206,10 +211,11 @@ fun Game(modifier: Modifier = Modifier, gameViewModel: GameViewModel = viewModel
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .padding(horizontal = 15.dp)
             .padding(top = 15.dp)
-            .padding(bottom = 150.dp),
+            .padding(bottom = 75.dp),
     ) {
         Column {
             Row(
@@ -222,7 +228,8 @@ fun Game(modifier: Modifier = Modifier, gameViewModel: GameViewModel = viewModel
                 Text(
                     stringResource(R.string.title),
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    style = typography.titleLarge,
                 )
                 TextButton(onClick = {
                     gameViewModel.resetGame()
@@ -230,12 +237,17 @@ fun Game(modifier: Modifier = Modifier, gameViewModel: GameViewModel = viewModel
                     Text(stringResource(R.string.restart))
                 }
             }
-            Text(stringResource(R.string.score, gameUiState.score))
+            Text(
+                stringResource(R.string.score, gameUiState.score),
+                style = typography.titleMedium,
+            )
         }
-        Board(
-            gameUiState.currentBoard, modifier = Modifier
-                .weight(1f)
-        )
+        Card(modifier = Modifier.padding(vertical = 25.dp)) {
+            Board(
+                gameUiState.currentBoard,
+                modifier = Modifier.padding(all = 4.dp)
+            )
+        }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(5.dp),
@@ -296,7 +308,8 @@ fun ButtonApp() {
                     .calculateStartPadding(layoutDirection),
                 end = WindowInsets.safeDrawing.asPaddingValues()
                     .calculateEndPadding(layoutDirection),
-            ),
+            )
+            .verticalScroll(rememberScrollState()),
     )
     {
         Game()
