@@ -68,7 +68,6 @@ class GameViewModel : ViewModel() {
 
     }
 
-
     fun resetGame() {
         _uiState.update { currentState ->
             currentState.copy(

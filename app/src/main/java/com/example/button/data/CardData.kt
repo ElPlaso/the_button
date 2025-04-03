@@ -36,6 +36,17 @@ class CardData {
         return hand.toTypedArray()
     }
 
+    fun generateRandomPocket(previousCards: Array<Card>): Array<Card> {
+        val pocket: MutableList<Card> = mutableListOf()
+
+        repeat((0..1).count()) {
+            val randomCard = generateRandomCard(pocket.toTypedArray() + previousCards)
+            pocket += randomCard
+        }
+
+        return pocket.toTypedArray()
+    }
+
     private val cardComparator = Comparator<Card> { a, b ->
         val aValue = a.rank.ordinal
         val bValue = b.rank.ordinal

@@ -29,6 +29,13 @@ class ButtonTests {
     }
 
     @Test
+    fun get_length_of_random_pocket() {
+        val expectedLength = 2
+        val actualLength = CardData().generateRandomPocket(arrayOf()).size
+        assertEquals(expectedLength, actualLength)
+    }
+
+    @Test
     fun get_best_hand_straight_flush() {
         val hand = arrayOf(
             Card(Suit.CLUBS, Rank.TEN),
