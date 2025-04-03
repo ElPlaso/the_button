@@ -21,6 +21,11 @@ class GameViewModel : ViewModel() {
         return currentBoard
     }
 
+    private fun getRandomPocket(): Array<Card> {
+        val pocket = CardData().generateRandomPocket(currentBoard)
+        return pocket
+    }
+
     private fun getBestHand(): Hand {
         return currentBestHand
     }
@@ -59,6 +64,7 @@ class GameViewModel : ViewModel() {
             _uiState.update { currentState ->
                 currentState.copy(
                     currentBoard = getRandomBoard(),
+                    currentPocket = getRandomPocket(),
                     currentHands = getHands(),
                     currentBestHand = getBestHand(),
                     score = updatedScore,
@@ -72,6 +78,7 @@ class GameViewModel : ViewModel() {
         _uiState.update { currentState ->
             currentState.copy(
                 currentBoard = getRandomBoard(),
+                currentPocket = getRandomPocket(),
                 currentHands = getHands(),
                 currentBestHand = getBestHand(),
                 score = 0,
