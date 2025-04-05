@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -39,7 +40,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -184,6 +184,25 @@ fun Board(hand: Array<Card>, modifier: Modifier = Modifier) {
 }
 
 @Composable
+fun Pocket(pocket: Array<Card>, modifier: Modifier = Modifier) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = modifier
+            .fillMaxWidth()
+    ) {
+        pocket.forEach {
+            val card = it
+            CardImage(
+                card, modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
 fun HandSelector(modifier: Modifier = Modifier, hand: Hand, onClick: () -> Unit) {
     val label = when (hand) {
         Hand.STRAIGHT_FLUSH -> stringResource(R.string.straight_flush)
@@ -242,10 +261,15 @@ fun Game(modifier: Modifier = Modifier, gameViewModel: GameViewModel = viewModel
                 style = typography.titleMedium,
             )
         }
-        Card(modifier = Modifier.padding(vertical = 25.dp)) {
+        Card(modifier = Modifier.padding(vertical = 50.dp)) {
             Board(
                 gameUiState.currentBoard,
                 modifier = Modifier.padding(all = 4.dp)
+            )
+        }
+        Box(modifier = Modifier.padding(horizontal = 50.dp, vertical = 25.dp)) {
+            Pocket(
+                gameUiState.currentPocket
             )
         }
         Column(
