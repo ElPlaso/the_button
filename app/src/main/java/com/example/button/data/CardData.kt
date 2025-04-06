@@ -58,7 +58,9 @@ class CardData {
         }
     }
 
-    fun calculateBestHand(hand: Array<Card>): Hand {
+    fun calculateBestHand(board: Array<Card>, pocket: Array<Card>): Hand {
+        val hand = pocket + board
+
         // Check for rank occurrences
         val rankOccurrences: MutableMap<Rank, Int> = mutableMapOf()
         hand.forEach {
@@ -68,13 +70,26 @@ class CardData {
 
         // Check for flush
         var seenSuit: Suit? = null
-        var isFlush = true
+        var nonFlushCount = 0
+        var seenFlushCards = 0
+        var isFlush = false
         run flushCheck@{
             hand.forEach {
                 if (it.suit != seenSuit && seenSuit != null) {
-                    isFlush = false
-                    return@flushCheck
+                    nonFlushCount++
+
+                    if (nonFlushCount == 3) {
+                        return@flushCheck
+                    }
+                } else {
+                    seenFlushCards++
+
+                    if (seenFlushCards == 5) {
+                        isFlush = true
+                        return@flushCheck
+                    }
                 }
+
                 seenSuit = it.suit
             }
         }
@@ -83,22 +98,42 @@ class CardData {
         val sortedHand = hand.clone()
         sortedHand.sortWith(cardComparator)
         var previousRank: Rank? = null
-        var isStraight = true
+        var previousStraightRank: Rank? = null
+        var nonStraightCount = 0
+        var seenStraightCards = 1
+        var isStraight = false
         run straightCheck@{
             sortedHand.forEach {
                 if (previousRank != null) {
                     val currentValue = it.rank.ordinal
 
                     // Includes edge case for low Ace
-                    if (currentValue - previousRank!!.ordinal != 1 && !(it.rank === Rank.ACE && previousRank == Rank.FIVE)) {
-                        isStraight = false
-                        return@straightCheck
+                    if (currentValue - previousRank!!.ordinal != 1 && !(it.rank === Rank.ACE && seenStraightCards == 4 && previousStraightRank == Rank.FIVE)) {
+                        nonStraightCount++
+
+                        if (nonStraightCount == 3) {
+                            return@straightCheck
+                        }
+
+                        if (!(seenStraightCards == 4 && previousStraightRank == Rank.FIVE)) {
+                            seenStraightCards = 1
+                        }
+                    } else {
+                        seenStraightCards++
+
+                        if (seenStraightCards == 5) {
+                            isStraight = true
+                            return@straightCheck
+                        }
+
+                        previousStraightRank = it.rank
                     }
                 }
                 previousRank = it.rank
             }
         }
 
+        // TODO: This is not always true
         if (isFlush && isStraight) {
             return Hand.STRAIGHT_FLUSH
         }

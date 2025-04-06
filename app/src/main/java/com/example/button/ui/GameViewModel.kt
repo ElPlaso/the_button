@@ -14,6 +14,7 @@ class GameViewModel : ViewModel() {
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 
     private var currentBoard: Array<Card> = arrayOf()
+    private var currentPocket: Array<Card> = arrayOf()
     private lateinit var currentBestHand: Hand
 
     private fun getRandomBoard(): Array<Card> {
@@ -22,8 +23,8 @@ class GameViewModel : ViewModel() {
     }
 
     private fun getRandomPocket(): Array<Card> {
-        val pocket = CardData().generateRandomPocket(currentBoard)
-        return pocket
+        currentPocket = CardData().generateRandomPocket(currentBoard)
+        return currentPocket
     }
 
     private fun getBestHand(): Hand {
@@ -31,7 +32,7 @@ class GameViewModel : ViewModel() {
     }
 
     private fun getHands(): Array<Hand> {
-        currentBestHand = CardData().calculateBestHand(currentBoard)
+        currentBestHand = CardData().calculateBestHand(currentBoard, currentPocket)
         val secondHand = CardData().getDifferentHand(arrayOf(currentBestHand))
         val thirdHand = CardData().getDifferentHand(arrayOf(currentBestHand, secondHand))
 
