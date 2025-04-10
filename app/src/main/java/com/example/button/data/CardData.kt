@@ -108,7 +108,7 @@ class CardData {
                     val currentValue = it.rank.ordinal
 
                     // Includes edge case for low Ace
-                    if (currentValue - previousRank!!.ordinal != 1 && !(it.rank === Rank.ACE && seenStraightCards == 4 && previousStraightRank == Rank.FIVE)) {
+                    if (currentValue - previousRank!!.ordinal != 1 && !(it.rank == Rank.ACE && seenStraightCards == 4 && previousStraightRank == Rank.FIVE)) {
                         nonStraightCount++
 
                         if (nonStraightCount == 3) {
@@ -133,8 +133,52 @@ class CardData {
             }
         }
 
-        // TODO: This is not always true
-        if (isFlush && isStraight) {
+        // TODO: Can optimise checking straight, flush, and straight flush
+        // Check for straight flush
+        var previousSFRank: Rank? = null
+        var previousStraightSFRank: Rank? = null
+        var nonSFCount = 0
+        var seenSFCards = 1
+        var seenSFSuit: Suit? = null
+        var previousFlushSFSuit: Suit? = null
+        var isStraightFlush = false
+        run straightFlushCheck@{
+            sortedHand.forEach {
+                if (previousSFRank != null) {
+                    val currentValue = it.rank.ordinal
+
+                    // Includes edge case for low Ace
+                    if ((currentValue - previousSFRank!!.ordinal != 1
+                                && !(it.rank == Rank.ACE && seenSFCards == 4 && previousStraightSFRank == Rank.FIVE))
+                        || (it.suit != previousFlushSFSuit && previousFlushSFSuit != null)
+                    ) {
+                        nonSFCount++
+                        if (nonSFCount == 3) {
+                            return@straightFlushCheck
+                        }
+
+                        if (!(seenSFCards == 4 && previousStraightSFRank == Rank.FIVE)) {
+                            previousFlushSFSuit = seenSFSuit
+                        }
+                    } else {
+                        seenSFCards++
+
+                        if (seenSFCards == 5) {
+                            isStraightFlush = true
+                            return@straightFlushCheck
+                        }
+
+                        previousStraightSFRank = it.rank
+                        previousFlushSFSuit = it.suit
+                    }
+                }
+
+                previousSFRank = it.rank
+                seenSFSuit = it.suit
+            }
+        }
+
+        if (isStraightFlush) {
             return Hand.STRAIGHT_FLUSH
         }
 

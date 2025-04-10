@@ -51,6 +51,21 @@ class ButtonTests {
     }
 
     @Test
+    fun get_best_hand_straight_flush_low_ace() {
+        val board = arrayOf(
+            Card(Suit.CLUBS, Rank.TWO),
+            Card(Suit.CLUBS, Rank.THREE),
+            Card(Suit.CLUBS, Rank.FOUR),
+            Card(Suit.CLUBS, Rank.FIVE),
+            Card(Suit.CLUBS, Rank.ACE)
+        )
+
+        val expectedBestHand = Hand.STRAIGHT_FLUSH
+        val actualBestHand = CardData().calculateBestHand(board, arrayOf())
+        assertEquals(expectedBestHand, actualBestHand)
+    }
+
+    @Test
     fun get_best_hand_quads() {
         val board = arrayOf(
             Card(Suit.CLUBS, Rank.ACE),
@@ -125,10 +140,45 @@ class ButtonTests {
         assertEquals(expectedBestHand, actualBestHand)
     }
 
-//    @Test
-//    fun get_best_hand_with_pocket_straight_flush() {
-//        // TODO
-//    }
+    @Test
+    fun get_best_hand_with_pocket_straight_flush() {
+        val board = arrayOf(
+            Card(Suit.CLUBS, Rank.TEN),
+            Card(Suit.CLUBS, Rank.JACK),
+            Card(Suit.CLUBS, Rank.QUEEN),
+            Card(Suit.DIAMONDS, Rank.KING),
+            Card(Suit.DIAMONDS, Rank.ACE)
+        )
+
+        val pocket = arrayOf(
+            Card(Suit.CLUBS, Rank.KING),
+            Card(Suit.CLUBS, Rank.ACE)
+        )
+
+        val expectedBestHand = Hand.STRAIGHT_FLUSH
+        val actualBestHand = CardData().calculateBestHand(board, pocket)
+        assertEquals(expectedBestHand, actualBestHand)
+    }
+
+    @Test
+    fun get_best_hand_with_pocket_straight_flush_low_ace() {
+        val board = arrayOf(
+            Card(Suit.CLUBS, Rank.TWO),
+            Card(Suit.CLUBS, Rank.THREE),
+            Card(Suit.CLUBS, Rank.FOUR),
+            Card(Suit.DIAMONDS, Rank.SEVEN),
+            Card(Suit.DIAMONDS, Rank.SEVEN)
+        )
+
+        val pocket = arrayOf(
+            Card(Suit.CLUBS, Rank.FIVE),
+            Card(Suit.CLUBS, Rank.ACE)
+        )
+
+        val expectedBestHand = Hand.STRAIGHT_FLUSH
+        val actualBestHand = CardData().calculateBestHand(board, pocket)
+        assertEquals(expectedBestHand, actualBestHand)
+    }
 
     @Test
     fun get_best_hand_with_pocket_quads() {
@@ -177,7 +227,7 @@ class ButtonTests {
             Card(Suit.SPADES, Rank.NINE),
             Card(Suit.SPADES, Rank.TEN),
             Card(Suit.HEARTS, Rank.TWO),
-            Card(Suit.HEARTS, Rank.SIX), // TODO: SEVEN should technically work here
+            Card(Suit.HEARTS, Rank.SEVEN),
         )
 
         val pocket = arrayOf(
