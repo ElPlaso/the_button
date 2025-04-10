@@ -69,29 +69,11 @@ class CardData {
         }
 
         // Check for flush
-        var seenSuit: Suit? = null
-        var nonFlushCount = 0
-        var seenFlushCards = 0
-        var isFlush = false
-        run flushCheck@{
-            hand.forEach {
-                if (it.suit != seenSuit && seenSuit != null) {
-                    nonFlushCount++
-
-                    if (nonFlushCount == 3) {
-                        return@flushCheck
-                    }
-                } else {
-                    seenFlushCards++
-
-                    if (seenFlushCards == 5) {
-                        isFlush = true
-                        return@flushCheck
-                    }
-                }
-
-                seenSuit = it.suit
-            }
+        // Check for suit occurrences
+        val suitOccurrences: MutableMap<Suit, Int> = mutableMapOf()
+        hand.forEach {
+            val newOccurrence = suitOccurrences[it.suit]?.plus(1) ?: 1
+            suitOccurrences[it.suit] = newOccurrence
         }
 
         // Check for straight
@@ -190,7 +172,7 @@ class CardData {
             return Hand.FULL_HOUSE
         }
 
-        if (isFlush) {
+        if (suitOccurrences.values.contains(5)) {
             return Hand.FLUSH
         }
 
