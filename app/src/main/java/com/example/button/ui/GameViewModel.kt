@@ -18,12 +18,12 @@ class GameViewModel : ViewModel() {
     private lateinit var currentBestHand: Hand
 
     private fun getRandomBoard(): Array<Card> {
-        currentBoard = CardData().generateRandomBoard()
+        currentBoard = CardData.generateRandomBoard()
         return currentBoard
     }
 
     private fun getRandomPocket(): Array<Card> {
-        currentPocket = CardData().generateRandomPocket(currentBoard)
+        currentPocket = CardData.generateRandomPocket(currentBoard)
         return currentPocket
     }
 
@@ -32,9 +32,9 @@ class GameViewModel : ViewModel() {
     }
 
     private fun getHands(): Array<Hand> {
-        currentBestHand = CardData().calculateBestHand(currentBoard, currentPocket)
-        val secondHand = CardData().getDifferentHand(arrayOf(currentBestHand))
-        val thirdHand = CardData().getDifferentHand(arrayOf(currentBestHand, secondHand))
+        currentBestHand = CardData.calculateBestHand(currentBoard, currentPocket)
+        val secondHand = CardData.getDifferentHand(arrayOf(currentBestHand))
+        val thirdHand = CardData.getDifferentHand(arrayOf(currentBestHand, secondHand))
 
         val hands = arrayOf(currentBestHand, secondHand, thirdHand)
         hands.shuffle()

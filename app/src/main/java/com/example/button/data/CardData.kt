@@ -5,7 +5,7 @@ import com.example.button.model.Hand
 import com.example.button.model.Rank
 import com.example.button.model.Suit
 
-class CardData {
+object CardData {
     private fun generateRandomCard(previousCards: Array<Card>): Card {
         val suits = enumValues<Suit>()
         val ranks = enumValues<Rank>()

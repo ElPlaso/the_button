@@ -51,7 +51,7 @@ class GameViewModelTest {
     fun gameViewModel_Initialization_FirstBoardLoaded() {
         val gameUiState = viewModel.uiState.value
         val bestHand =
-            CardData().calculateBestHand(gameUiState.currentBoard, gameUiState.currentPocket)
+            CardData.calculateBestHand(gameUiState.currentBoard, gameUiState.currentPocket)
 
         assertEquals(bestHand, gameUiState.currentBestHand)
         assertTrue(gameUiState.score == SCORE_AFTER_INITIALIZATION)

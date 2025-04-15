@@ -24,14 +24,14 @@ class ButtonTests {
     @Test
     fun get_length_of_random_hand() {
         val expectedLength = 5
-        val actualLength = CardData().generateRandomBoard().size
+        val actualLength = CardData.generateRandomBoard().size
         assertEquals(expectedLength, actualLength)
     }
 
     @Test
     fun get_length_of_random_pocket() {
         val expectedLength = 2
-        val actualLength = CardData().generateRandomPocket(arrayOf()).size
+        val actualLength = CardData.generateRandomPocket(arrayOf()).size
         assertEquals(expectedLength, actualLength)
     }
 
@@ -46,7 +46,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.STRAIGHT_FLUSH
-        val actualBestHand = CardData().calculateBestHand(board, arrayOf())
+        val actualBestHand = CardData.calculateBestHand(board, arrayOf())
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -61,7 +61,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.STRAIGHT_FLUSH
-        val actualBestHand = CardData().calculateBestHand(board, arrayOf())
+        val actualBestHand = CardData.calculateBestHand(board, arrayOf())
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -76,7 +76,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.QUADS
-        val actualBestHand = CardData().calculateBestHand(board, arrayOf())
+        val actualBestHand = CardData.calculateBestHand(board, arrayOf())
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -91,7 +91,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.FULL_HOUSE
-        val actualBestHand = CardData().calculateBestHand(board, arrayOf())
+        val actualBestHand = CardData.calculateBestHand(board, arrayOf())
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -106,7 +106,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.FLUSH
-        val actualBestHand = CardData().calculateBestHand(board, arrayOf())
+        val actualBestHand = CardData.calculateBestHand(board, arrayOf())
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -121,7 +121,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.STRAIGHT
-        val actualBestHand = CardData().calculateBestHand(board, arrayOf())
+        val actualBestHand = CardData.calculateBestHand(board, arrayOf())
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -136,7 +136,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.STRAIGHT
-        val actualBestHand = CardData().calculateBestHand(board, arrayOf())
+        val actualBestHand = CardData.calculateBestHand(board, arrayOf())
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -156,7 +156,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.STRAIGHT_FLUSH
-        val actualBestHand = CardData().calculateBestHand(board, pocket)
+        val actualBestHand = CardData.calculateBestHand(board, pocket)
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -176,7 +176,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.STRAIGHT_FLUSH
-        val actualBestHand = CardData().calculateBestHand(board, pocket)
+        val actualBestHand = CardData.calculateBestHand(board, pocket)
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -196,7 +196,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.QUADS
-        val actualBestHand = CardData().calculateBestHand(board, pocket)
+        val actualBestHand = CardData.calculateBestHand(board, pocket)
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -216,7 +216,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.FULL_HOUSE
-        val actualBestHand = CardData().calculateBestHand(board, pocket)
+        val actualBestHand = CardData.calculateBestHand(board, pocket)
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -236,7 +236,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.FLUSH
-        val actualBestHand = CardData().calculateBestHand(board, pocket)
+        val actualBestHand = CardData.calculateBestHand(board, pocket)
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -256,7 +256,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.STRAIGHT
-        val actualBestHand = CardData().calculateBestHand(board, pocket)
+        val actualBestHand = CardData.calculateBestHand(board, pocket)
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -276,7 +276,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.STRAIGHT
-        val actualBestHand = CardData().calculateBestHand(board, pocket)
+        val actualBestHand = CardData.calculateBestHand(board, pocket)
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -296,7 +296,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.TRIPS
-        val actualBestHand = CardData().calculateBestHand(board, pocket)
+        val actualBestHand = CardData.calculateBestHand(board, pocket)
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -316,7 +316,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.TWO_PAIR
-        val actualBestHand = CardData().calculateBestHand(board, pocket)
+        val actualBestHand = CardData.calculateBestHand(board, pocket)
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -336,7 +336,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.PAIR
-        val actualBestHand = CardData().calculateBestHand(board, pocket)
+        val actualBestHand = CardData.calculateBestHand(board, pocket)
         assertEquals(expectedBestHand, actualBestHand)
     }
 
@@ -356,7 +356,7 @@ class ButtonTests {
         )
 
         val expectedBestHand = Hand.HIGH_CARD
-        val actualBestHand = CardData().calculateBestHand(board, pocket)
+        val actualBestHand = CardData.calculateBestHand(board, pocket)
         assertEquals(expectedBestHand, actualBestHand)
     }
 }
